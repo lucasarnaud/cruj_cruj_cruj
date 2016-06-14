@@ -33,7 +33,7 @@ class CrujCrujCrujController < ApplicationController
   def edit; end
 
   def update
-    if @resource.update_attributes(params[snake_case_model_name])
+    if @resource.update_attributes(safe_parameters)
       redirect_to(action: :index, notice: l("#{snake_case_model_name}_edit_success_message"))
     else
       render action: 'edit'
@@ -86,7 +86,15 @@ class CrujCrujCrujController < ApplicationController
   end
 
   def build_resource
-    @resource = model_class.new(params[snake_case_model_name])
+    @resource = if params[snake_case_model_name]
+                  model_class.new(safe_parameters)
+                else
+                  model_class.new
+                end
+  end
+
+  def safe_parameters
+    params.require(snake_case_model_name).permit!
   end
 
   def find_resource
@@ -108,7 +116,11 @@ class CrujCrujCrujController < ApplicationController
   end
 
   def model_name
-    self.class.name.sub(/Controller$/, '').singularize
+    if @resource
+      @resource.class.name
+    else
+      self.class.name.sub(/Controller$/, '').singularize
+    end
   end
 
   def model_class
