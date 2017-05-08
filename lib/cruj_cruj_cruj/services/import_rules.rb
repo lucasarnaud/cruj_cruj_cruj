@@ -18,7 +18,7 @@ module CrujCrujCruj
             add_data_validation(sheet, idx + 1, validation, allow_blank, parameters_sheet_name) if validation
           end
 
-          sheet.add_row (([:id] |fields.map { |field| field[:field_name] }).map { |t| I18n.t("#{t}_label") }), style: title
+          sheet.add_row (([:id] |fields.map { |field| field[:field_name] }).map { |t| I18n.t("label_#{t}") }), style: title
 
           data.map { |resource| [resource.id].concat(fields.map { |field| resource_field_value(resource, field) }) }.each do |row|
             sheet.add_row row, types: row.map{ |_| :string }
