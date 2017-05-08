@@ -24,7 +24,8 @@ class CrujCrujCrujController < ApplicationController
 
   def create
     if @resource.save
-      redirect_to(action: :index, notice: l("#{snake_case_model_name}_create_success_message"))
+      flash[:notice] = l("#{snake_case_model_name}_create_success_message")
+      redirect_to(action: :index)
     else
       render action: 'new'
     end
@@ -34,7 +35,8 @@ class CrujCrujCrujController < ApplicationController
 
   def update
     if @resource.update_attributes(safe_parameters)
-      redirect_to(action: :index, notice: l("#{snake_case_model_name}_edit_success_message"))
+      flash[:notice] = l("#{snake_case_model_name}_edit_success_message")
+      redirect_to(action: :index)
     else
       render action: 'edit'
     end
@@ -44,7 +46,8 @@ class CrujCrujCrujController < ApplicationController
 
   def destroy
     @resource.destroy
-    redirect_to action: :index, notice: l("#{snake_case_model_name}_delete_success_message")
+    flash[:notice] = l("#{snake_case_model_name}_delete_success_message")
+    redirect_to action: :index
   end
 
   def export_template
