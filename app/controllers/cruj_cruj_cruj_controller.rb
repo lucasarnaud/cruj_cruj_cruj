@@ -54,8 +54,10 @@ class CrujCrujCrujController < ApplicationController
     @q = model_class.ransack(params[:q])
     @q.sorts = default_sort if @q.sorts.blank?
 
-    filename = CrujCrujCruj::Services::ImportRules.export_template(form_fields, @q.result)
-    send_file(filename, filename: l(:export_template_filename), type: "application/vnd.ms-excel")
+    file = CrujCrujCruj::Services::ImportRules.export_template(form_fields, @q.result)
+    send_file(file,
+              filename: "#{t("#{snake_case_model_name}_export_template_filename")}.xlsx",
+              type: "application/vnd.ms-excel")
   end
 
   def import
