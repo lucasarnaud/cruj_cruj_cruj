@@ -63,8 +63,8 @@ module CrujCrujCruj
 
           fields.each_with_index do |field, idx|
             resource.send("#{field[:field_name]}=", row_value(row, idx+1, field, spreadsheet))
-            resource.save!
           end
+          resource.save!
         end
 
         {}
